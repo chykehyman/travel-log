@@ -2,18 +2,26 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
 const { notFound, errorHandler } = require('./middleware');
 
-const env = process.env.NODE_ENV || 'development';
-const PORT = process.env.PORT || 1337;
+const pe = process.env;
+const env = pe.NODE_ENV || 'development';
+const { PORT } = pe;
 const app = express();
+
+mongoose.connect(pe.MONGO_URI, {
+  useNewUrlParser: true,
+});
 
 app.use(morgan('":method :url HTTP/:http-version" :status :res[content-length] :remote-addr - :remote-user [:date[clf]]', {
   skip: (req, res) => env === 'production' && res.statusCode < 400,
 }))
   .use(helmet())
   .use(cors({
-    origin: 'http://localhost:3000',
+    origin: pe.CORS_ORIGIN,
   }));
 
 app.get('/', (req, res) => {
