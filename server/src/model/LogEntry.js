@@ -5,7 +5,7 @@ const requiredNumber = {
   required: true,
 };
 
-const LogEntrySchema = Schema({
+const LogEntrySchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -29,7 +29,7 @@ const LogEntrySchema = Schema({
     min: -180,
     max: 180,
   },
-  visitedDate: {
+  visitDate: {
     type: Date,
     required: true,
   },
@@ -39,6 +39,4 @@ const LogEntrySchema = Schema({
 
 const LogEntry = model('LogEntry', LogEntrySchema);
 
-module.exports = {
-  LogEntry,
-};
+module.exports = LogEntry;
